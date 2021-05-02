@@ -43,4 +43,11 @@ class UserTest < ActiveSupport::TestCase
     duplicate_user = @user.dup
     assert_not duplicate_user.valid?
   end
+
+  test "email validation same casedown" do
+    email_string = "Ab6IX@test.com"
+    @user.email = email_string
+    @user.save
+    assert_equal email_string.downcase, @user.reload.email
+  end
 end
