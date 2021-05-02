@@ -3,7 +3,7 @@ require 'securerandom'
 
 class UserTest < ActiveSupport::TestCase
   def setup
-    @user = User.new(name:"テストユーザ",email:"test@test.com")
+    @user = User.new(name:"テストユーザ", email:"test@test.com", password: "pasword1234", password_confirmation: "pasword1234")
   end
 
   test "should be valid" do
@@ -49,5 +49,15 @@ class UserTest < ActiveSupport::TestCase
     @user.email = email_string
     @user.save
     assert_equal email_string.downcase, @user.reload.email
+  end
+
+  test "password should be present (nonblank)" do
+    @user.password = @user.password_confirmation = " " * 6
+    assert_not @user.valid?
+  end
+
+  test "password should have a minimum length" do
+    @user.password = @user.password_confirmation = "" * 5
+    assert_not @user.valid?
   end
 end
