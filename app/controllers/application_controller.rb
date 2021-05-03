@@ -1,5 +1,7 @@
 class ApplicationController < ActionController::Base
-  def hello
-    render html:"hello sample application!"
+  include SessionsHelper
+  # 渡されたユーザーでログインする
+  def log_in(user)
+    session[:user_id] = user.id
   end
 end
