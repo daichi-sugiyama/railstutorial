@@ -15,6 +15,6 @@ class SessionsController < ApplicationController
     end
   end
 
-  def destory
+  def destroy
   end
 end
