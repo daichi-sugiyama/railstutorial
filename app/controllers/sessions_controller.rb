@@ -7,6 +7,7 @@ class SessionsController < ApplicationController
     if user && user.authenticate(params[:session][:password])
       # ユーザー情報画面にリダイレクト
       log_in(user)
+      remember user
       redirect_to user
     else
       # エラーメッセージを作成
