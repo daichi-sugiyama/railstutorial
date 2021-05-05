@@ -52,9 +52,10 @@ class User < ApplicationRecord
   end
 
   # パスワード再設定用の要素を保存
-  def create_password_digest
+  def create_reset_digest
     self.reset_token = User.new_token
-    self.reset_digest = User.digest(reset_token)
+    update_attribute(:reset_digest, User.digest(reset_token))
+    update_attribute(:reset_sent_at, Time.zone.now)
   end
 
   # パスワード再設定用のメールを送信
