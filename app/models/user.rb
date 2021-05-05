@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   attr_accessor :remember_token
   attr_accessor :activation_token
+  attr_accessor :reset_token
 
   before_save :downcase_email
   before_create :create_activation_digest
@@ -42,14 +43,23 @@ class User < ApplicationRecord
 
   # アカウントを有効にする
   def activate
-    # update_attribute(:activated, true)
-    # update_attribute(:activated_at, Time.zone.now)
     update_columns(activated: true, activated_at: Time.zone.now)
   end
 
   # 有効化用のメールを送信する
   def send_activation_email
     UserMailer.account_activation(self).deliver_now
+  end
+
+  # パスワード再設定用の要素を保存
+  def create_password_digest
+    self.reset_token = User.new_token
+    self.reset_digest = User.digest(reset_token)
+  end
+
+  # パスワード再設定用のメールを送信
+  def send_password_reset_email
+    UserMailer.password_reset(self).deliver_now
   end
 
   private
