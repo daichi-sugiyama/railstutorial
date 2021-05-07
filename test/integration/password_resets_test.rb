@@ -54,4 +54,21 @@ class PasswordResetsTest < ActionDispatch::IntegrationTest
     assert_not flash.empty? # flashメッセージが存在
     assert_redirected_to user # userにリダイレクト
   end
+
+  test "expired token" do
+    # get
+    get new_password_reset_path # /password_resets/#{token} にアクセス
+    # post
+    post password_resets_path, params: {password_reset: {email: @user.email}}
+    # patch
+    user = assigns(:user)
+    user.update_attribute(:reset_sent_at, Time.zone.now.ago(3.hour)) # reset_tokenを2時間に設定
+    patch password_reset_path(user.reset_token), params: {email: user.email, 
+      user: {password: "bazzfoo", password_confirmation: "bazzfoo"}}
+
+    # アサーション
+    assert_response :redirect
+    follow_redirect!
+    assert_match /expired/i, response.body
+  end
 end
