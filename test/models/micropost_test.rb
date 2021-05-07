@@ -3,7 +3,7 @@ require 'test_helper'
 class MicropostTest < ActiveSupport::TestCase
   def setup
     @user = users(:michael)
-    @micropost = Micropost.new(content: "サンプルテキスト", user_id: @user.id) #TODO:要修正
+    @micropost = @user.microposts.build(content: "サンプルテキスト", user_id: @user.id) #TODO:要修正
   end
 
   # 【メモ】falseの場合、バリデーション発生
@@ -28,5 +28,8 @@ class MicropostTest < ActiveSupport::TestCase
     assert_not @micropost.valid?
   end
 
+  test "order should be most recent first" do
+    assert_equal microposts(:most_recent), Micropost.first
+  end
   
 end

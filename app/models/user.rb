@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  has_many :microposts
+
   attr_accessor :remember_token
   attr_accessor :activation_token
   attr_accessor :reset_token
