@@ -51,6 +51,7 @@ class PasswordResetsTest < ActionDispatch::IntegrationTest
     patch password_reset_path(user.reset_token), params: {email: user.email, 
       user: {password: "bazzfoo", password_confirmation: "bazzfoo"}}
     assert is_logged_in? # ログインを確認
+    assert_nil user.reload.reset_digest, user.reload.reset_sent_at # reset_digestとreset_sent_atがnilであることを確認
     assert_not flash.empty? # flashメッセージが存在
     assert_redirected_to user # userにリダイレクト
   end
