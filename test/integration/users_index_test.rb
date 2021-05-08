@@ -24,10 +24,10 @@ class UsersIndexTest < ActionDispatch::IntegrationTest
         assert_select 'a[href=?]', user_path(user), false
       end
     end
-    # 削除をテスト
-    assert_difference 'User.count', -1 do
-      delete user_path(@non_admin)
-    end
+    # 【TODO】 削除をテスト
+    # assert_difference 'User.count', -1 do
+    #   delete user_path(@non_admin)
+    # end
   end
 
   test "index as non-admin" do
