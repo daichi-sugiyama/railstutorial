@@ -1,4 +1,5 @@
 class Micropost < ApplicationRecord
+  has_one_attached :image
   belongs_to :user
   default_scope -> { order(created_at: :desc) } #【メモ】ラムダ式（無名関数）
 
